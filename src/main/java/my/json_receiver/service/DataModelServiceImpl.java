@@ -27,4 +27,9 @@ public class DataModelServiceImpl implements DataModelService {
     public void save(DataModel dataModel) {
         jsonRepository.save(dataModel);
     }
+
+    @Override
+    public void deleteAllData() {
+        jsonRepository.deleteAll();
+    }
 }

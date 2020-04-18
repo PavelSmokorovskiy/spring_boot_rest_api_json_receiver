@@ -11,4 +11,6 @@ public interface DataModelService {
     Optional<DataModel> getDataById(long id);
 
     void save(DataModel dataModel);
+
+    void deleteAllData();
 }

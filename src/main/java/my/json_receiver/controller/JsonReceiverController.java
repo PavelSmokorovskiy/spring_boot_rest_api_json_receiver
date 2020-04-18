@@ -51,11 +51,18 @@ public class JsonReceiverController {
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String receiveData(@RequestBody Map<String, ?> json) {
+    public Map<String, String> receiveData(@RequestBody Map<String, ?> json) {
 
         Map<String, String> flatJson = Flattener.flattener(json);
         DataModel dataModel = DataModel.builder().json(flatJson).build();
         dataModelService.save(dataModel);
-        return flatJson.toString();
+        return flatJson;
+    }
+
+    @DeleteMapping(value = "")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteAllData(){
+        dataModelService.deleteAllData();
     }
 }
