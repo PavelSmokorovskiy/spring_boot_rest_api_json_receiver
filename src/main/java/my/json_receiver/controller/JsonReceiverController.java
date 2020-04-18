@@ -74,7 +74,7 @@ public class JsonReceiverController {
         Map<String, String> flatJson = Flattener.flattener(json);
         DataModel dataModel = DataModel.builder().json(flatJson).build();
         dataModelService.save(dataModel);
-        logger.info("json received in Db with id: {}: {}", dataModel.getId(), dataModel.getJson());
+        logger.info("json received in Db: {}", dataModel);
         return flatJson;
     }
 
