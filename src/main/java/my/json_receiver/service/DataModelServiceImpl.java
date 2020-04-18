@@ -12,6 +12,11 @@ public class DataModelServiceImpl implements DataModelService {
     private JsonRepository jsonRepository;
 
     @Override
+    public Iterable<DataModel> getAllData() {
+        return jsonRepository.findAll();
+    }
+
+    @Override
     public void save(DataModel dataModel) {
         jsonRepository.save(dataModel);
     }

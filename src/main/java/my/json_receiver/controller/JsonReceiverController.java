@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -28,11 +29,13 @@ public class JsonReceiverController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String getData() {
+
+        Iterable<DataModel> allData = dataModelService.getAllData();
         return "test";
     }
 
     @PostMapping(value = "json")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String receiveData(@RequestBody Map<String, ?> json) {
 
