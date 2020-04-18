@@ -12,7 +12,7 @@ import java.util.Map;
 public class DataModel {
 
     @Id
-    @Column(updatable = true, nullable = false)
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -47,9 +47,5 @@ public class DataModel {
 
     public Map<String, String> getJson() {
         return json;
-    }
-
-    public void setJson(Map<String, String> map) {
-        this.json = map;
     }
 }

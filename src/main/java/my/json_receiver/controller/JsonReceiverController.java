@@ -1,10 +1,8 @@
 package my.json_receiver.controller;
 
-import my.json_receiver.config.Logging;
 import my.json_receiver.model.DataModel;
 import my.json_receiver.service.DataModelService;
 import my.json_receiver.service.Flattener;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * REST controller for receiving JSON
  */
@@ -21,11 +22,16 @@ import java.util.Optional;
 @RequestMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
 public class JsonReceiverController {
 
-    private final Logging logger = new Logging(LogManager.getLogger(this.getClass()));
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private DataModelService dataModelService;
 
+    /**
+     * Get all data
+     *
+     * @link http://localhost:8080/json/
+     */
     @GetMapping(value = "")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -37,6 +43,11 @@ public class JsonReceiverController {
         return result;
     }
 
+    /**
+     * Get data by Id
+     *
+     * @link http://localhost:8080/json/
+     */
     @GetMapping(value = "{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -45,9 +56,15 @@ public class JsonReceiverController {
         Optional<DataModel> data = dataModelService.getDataById(id);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put(data.get().getId().toString(), data.get().getJson());
+        logger.info("jsonData id: {}: {}", id, result);
         return result;
     }
 
+    /**
+     * Persist JSON data to DB
+     *
+     * @link http://localhost:8080/json/
+     */
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -59,10 +76,15 @@ public class JsonReceiverController {
         return flatJson;
     }
 
+    /**
+     * Delete all data
+     *
+     * @link http://localhost:8080/json/
+     */
     @DeleteMapping(value = "")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteAllData(){
+    public void deleteAllData() {
         dataModelService.deleteAllData();
     }
 }
