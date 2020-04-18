@@ -40,6 +40,7 @@ public class JsonReceiverController {
         Iterable<DataModel> allData = dataModelService.getAllData();
         Map<String, Object> result = new LinkedHashMap<>();
         allData.forEach(data -> result.put(data.getId().toString(), data.getJson()));
+        logger.info("jsonAllData {}", result);
         return result;
     }
 
@@ -55,7 +56,7 @@ public class JsonReceiverController {
 
         Optional<DataModel> data = dataModelService.getDataById(id);
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put(data.get().getId().toString(), data.get().getJson());
+        data.ifPresent(dataModel -> result.put(dataModel.getId().toString(), dataModel.getJson()));
         logger.info("jsonData id: {}: {}", id, result);
         return result;
     }
@@ -73,6 +74,7 @@ public class JsonReceiverController {
         Map<String, String> flatJson = Flattener.flattener(json);
         DataModel dataModel = DataModel.builder().json(flatJson).build();
         dataModelService.save(dataModel);
+        logger.info("json received in Db with id: {}: {}", dataModel.getId(), dataModel.getJson());
         return flatJson;
     }
 
@@ -86,5 +88,6 @@ public class JsonReceiverController {
     @ResponseBody
     public void deleteAllData() {
         dataModelService.deleteAllData();
+        logger.info("Deleted All json Data");
     }
 }

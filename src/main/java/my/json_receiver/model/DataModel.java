@@ -48,4 +48,12 @@ public class DataModel {
     public Map<String, String> getJson() {
         return json;
     }
+
+    @Override
+    public String toString() {
+        return "DataModel{" +
+                "id=" + id +
+                ", json=" + json +
+                '}';
+    }
 }
