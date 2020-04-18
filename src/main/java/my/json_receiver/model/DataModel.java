@@ -14,7 +14,7 @@ public class DataModel {
     @Id
     @Column(updatable = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ElementCollection
     private Map<String, String> json;

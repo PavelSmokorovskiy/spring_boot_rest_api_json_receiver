@@ -5,6 +5,8 @@ import my.json_receiver.repository.JsonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class DataModelServiceImpl implements DataModelService {
 
@@ -14,6 +16,11 @@ public class DataModelServiceImpl implements DataModelService {
     @Override
     public Iterable<DataModel> getAllData() {
         return jsonRepository.findAll();
+    }
+
+    @Override
+    public Optional<DataModel> getDataById(long id) {
+        return jsonRepository.findById(id);
     }
 
     @Override
