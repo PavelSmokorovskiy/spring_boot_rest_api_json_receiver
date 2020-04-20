@@ -1,8 +1,8 @@
 package my.json_receiver.controller;
 
 import my.json_receiver.model.DataModel;
-import my.json_receiver.service.DataModelService;
-import my.json_receiver.service.Flattener;
+import my.json_receiver.service.DataService;
+import my.json_receiver.service.MapFlattener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ public class JsonReceiverController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private DataModelService dataModelService;
+    private DataService dataService;
 
     /**
      * Get all data
@@ -37,7 +37,7 @@ public class JsonReceiverController {
     @ResponseBody
     public Map<String, ?> getAllData() {
 
-        Iterable<DataModel> allData = dataModelService.getAllData();
+        Iterable<DataModel> allData = dataService.getAllData();
         Map<String, Object> result = new LinkedHashMap<>();
         allData.forEach(data -> result.put(data.getId().toString(), data.getJson()));
         logger.info("jsonAllData {}", result);
@@ -54,7 +54,7 @@ public class JsonReceiverController {
     @ResponseBody
     public Map<String, ?> getDataById(@PathVariable long id) {
 
-        Optional<DataModel> data = dataModelService.getDataById(id);
+        Optional<DataModel> data = dataService.getDataById(id);
         Map<String, Object> result = new LinkedHashMap<>();
         data.ifPresent(dataModel -> result.put(dataModel.getId().toString(), dataModel.getJson()));
         logger.info("jsonData id: {}: {}", id, result);
@@ -71,9 +71,9 @@ public class JsonReceiverController {
     @ResponseBody
     public Map<String, String> receiveData(@RequestBody Map<String, ?> json) {
 
-        Map<String, String> flatJson = Flattener.flattener(json);
+        Map<String, String> flatJson = MapFlattener.flattener(json);
         DataModel dataModel = DataModel.builder().json(flatJson).build();
-        dataModelService.save(dataModel);
+        dataService.save(dataModel);
         logger.info("json received in Db: {}", dataModel);
         return flatJson;
     }
@@ -87,7 +87,7 @@ public class JsonReceiverController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteAllData() {
-        dataModelService.deleteAllData();
+        dataService.deleteAllData();
         logger.info("Deleted All json Data");
     }
 }

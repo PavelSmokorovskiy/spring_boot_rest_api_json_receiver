@@ -4,7 +4,7 @@ import org.springframework.vault.support.JsonMapFlattener;
 
 import java.util.Map;
 
-public class Flattener {
+public class MapFlattener {
 
     /**
      * Flatten a hierarchical Map into a flat Map with key names using property dot notation.

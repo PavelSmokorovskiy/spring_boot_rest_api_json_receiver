@@ -4,7 +4,7 @@ import my.json_receiver.model.DataModel;
 
 import java.util.Optional;
 
-public interface DataModelService {
+public interface DataService {
 
     Iterable<DataModel> getAllData();
 
