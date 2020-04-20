@@ -2,7 +2,6 @@ package my.json_receiver;
 
 import my.json_receiver.model.DataModel;
 import my.json_receiver.repository.DataRepository;
-import my.json_receiver.service.DataService;
 import my.json_receiver.service.MapFlattener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
@@ -27,11 +29,6 @@ public class JsonReceiverControllerIntegrationTest {
 
     @Autowired
     private DataRepository dataRepository;
-
-    @Autowired
-    private DataService dataService;
-
-    private final String sqlQuery = "SELECT 'json' FROM db.data_model_json WHERE (`data_model_id` = '1') and (`json_key` = 'json.key1');";
 
     private DataModel getDataModel() {
 
@@ -63,25 +60,36 @@ public class JsonReceiverControllerIntegrationTest {
     }
 
     @Test
-    public void contextLoads() {
-    }
-
-    @Test
     public void testGetAllData() {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
+        restTemplate.postForEntity(getRootUrl() + "/json", getDataModel(), DataModel.class);
+        assertFalse(isDBEmpty());
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
         ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/json",
                 HttpMethod.GET, entity, String.class);
-
         assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("value1"));
+        assertTrue(response.getBody().contains("json.key3.internalKey2"));
     }
 
     @Test
     public void testGetDataById() {
 
+        dataRepository.deleteAll();
+        assertTrue(isDBEmpty());
         restTemplate.postForEntity(getRootUrl() + "/json", getDataModel(), DataModel.class);
-        DataModel dataModel = restTemplate.getForObject(getRootUrl() + "/json/1", DataModel.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/json/1",
+                HttpMethod.GET, entity, String.class);
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("value2"));
+        assertTrue(response.getBody().contains("json.key3.internalKey1"));
+
+        DataModel dataModel = restTemplate.getForObject(getRootUrl() + "/json/0", DataModel.class);
         assertNotNull(dataModel);
 
         Iterable<DataModel> allData = dataRepository.findAll();
