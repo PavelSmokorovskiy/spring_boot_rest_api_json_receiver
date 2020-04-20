@@ -19,8 +19,8 @@ dependencies {
 	implementation 'org.springframework.vault:spring-vault-core:2.2.2.RELEASE'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-	runtimeOnly 'mysql:mysql-connector-java'
-//    runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
