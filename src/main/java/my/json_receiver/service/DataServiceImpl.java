@@ -19,7 +19,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public Optional<DataModel> getDataById(long id) {
+    public Optional<DataModel> getDataById(Long id) {
         return dataRepository.findById(id);
     }
 

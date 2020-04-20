@@ -15,22 +15,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class ControllerSymbolTest {
 
-	@Autowired
-	private TestRestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-	@Test
-	@DisplayName("test '{'")
-	void testGetAllDataSymbol() {
-		String message = this.restTemplate.getForObject("/json", String.class);
-		assertTrue(message.contains("{"));
-	}
+    @Test
+    @DisplayName("test '{'")
+    void testGetAllDataSymbol() {
+        String message = this.restTemplate.getForObject("/json", String.class);
+        assertTrue(message.contains("{"));
+    }
 
-	@Test
-	@DisplayName("test '{'")
-	void testGetDataByIdSymbol() {
-		String message0 = this.restTemplate.getForObject("/json/0", String.class);
-		String message1 = this.restTemplate.getForObject("/json/1", String.class);
-		assertTrue(message0.contains("{"));
-		assertTrue(message1.contains("{"));
-	}
+    @Test
+    @DisplayName("test '{'")
+    void testGetDataByIdSymbol() {
+        String message0 = this.restTemplate.getForObject("/json/0", String.class);
+        String message1 = this.restTemplate.getForObject("/json/1", String.class);
+        assertTrue(message0.contains("{"));
+        assertTrue(message1.contains("{"));
+    }
 }

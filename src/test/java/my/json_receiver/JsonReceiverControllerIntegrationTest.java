@@ -131,8 +131,7 @@ public class JsonReceiverControllerIntegrationTest {
 
     private Boolean isDBEmpty() {
 
-        Iterable<DataModel> allData = dataRepository.findAll();
-        return ((List) allData).size() == 0;
+        List<DataModel> allData = (List<DataModel>) dataRepository.findAll();
+        return allData.size() == 0;
     }
 }
-

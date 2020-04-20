@@ -8,7 +8,7 @@ public interface DataService {
 
     Iterable<DataModel> getAllData();
 
-    Optional<DataModel> getDataById(long id);
+    Optional<DataModel> getDataById(Long id);
 
     void save(DataModel dataModel);
 
